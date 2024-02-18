@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-//Make a integrated test
+//Make an integrated test
 @SpringBootTest
 class SampleRedisRepositoryTest {
 
@@ -13,6 +13,7 @@ class SampleRedisRepositoryTest {
 
     @Test
     void test() {
+        //Use Redis as same as JPA.
         SampleRedisEntity sampleRedisEntity = SampleRedisEntity.builder().build();
 
         sampleRedisRepository.save(sampleRedisEntity);
