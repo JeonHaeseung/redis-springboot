@@ -7,6 +7,8 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.time.Duration;
 
@@ -23,7 +25,7 @@ public class RedisConfig {
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         /* Most basic configuration */
-        //return new LettuceConnectionFactory(host, port);
+        // return new LettuceConnectionFactory(host, port);
 
         /* Detailed configuration */
         RedisStandaloneConfiguration redisConfig = new RedisStandaloneConfiguration(host, port);
@@ -34,5 +36,22 @@ public class RedisConfig {
                         .shutdownTimeout(Duration.ZERO) //Immediately shutdown after application shutdown
                         .build();
         return new LettuceConnectionFactory(redisConfig, clientConfig);
+    }
+
+    /* Use redis template for redis*/
+    @Bean
+    public RedisTemplate<String, Object> redisTemplate() {
+        /* Most basic configuration */
+        // RedisTemplate<?, ?> redisTemplate = new RedisTemplate<>();
+        // redisTemplate.setConnectionFactory(redisConnectionFactory());
+
+        /* Detailed configuration */
+        // set key data type to String and value data type to Object
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(redisConnectionFactory());
+        // change to byte by serializer
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new StringRedisSerializer());
+        return redisTemplate;
     }
 }
